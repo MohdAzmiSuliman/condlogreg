@@ -79,3 +79,17 @@ condlogm4_smk <- clogit (I(low_bw == "=<2.5kg") ~ smoke + strata(pair), data = b
 summary(condlogm4_smk)
 ```
 
+## Prediction
+
+```{r}
+clrm4_smkpredrisk <- augment(condlogm4_smk, type.predict = "risk", data = bwds)
+clrm4_smkpredrisk
+
+clrm4_smkpredprob <- augment(condlogm4_smk, type.predict = "expected", data = bwds)
+clrm4_smkpredprob
+
+clrm4_smkfit <- predict(condlogm4_smk, type = "expected")
+head(clrm4_smkfit)
+```
+
+
