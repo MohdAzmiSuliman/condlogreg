@@ -67,3 +67,15 @@ freq(bwds)
 descr(bwds)
 ```
 
+
+
+```{r}
+condlogm4_lwt <- clogit (I(low_bw == "=<2.5kg") ~ last_wt + strata(pair), data = bwds)
+summary(condlogm4_lwt)
+```
+
+```{r}
+condlogm4_smk <- clogit (I(low_bw == "=<2.5kg") ~ smoke + strata(pair), data = bwds)
+summary(condlogm4_smk)
+```
+
