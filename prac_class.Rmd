@@ -1,0 +1,69 @@
+---
+title: "Conditional Logistic Regression Class"
+author: "Mohd Azmi"
+date: "04/03/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(pacman)
+p_load(tidyverse, summarytools, survival, broom, knitr)
+```
+
+# Tutorial 1
+
+```{r}
+library(HSAUR2)
+pracds <- backpain
+
+head(pracds)
+ctable(pracds$driver, pracds$status)
+ctable(pracds$suburban, pracds$status)
+```
+
+
+```{r}
+condlogm1 <- clogit(I(status == "case") ~ driver + suburban + strata (ID), data = pracds)
+condlogm1
+summary(condlogm1)
+tidy(condlogm1, conf.int = T)
+```
+
+the OR of herniated disc among driver was 1.93 as compared to non-driver, when adjusted to suburban
+
+# Tutor 2
+
+```{r}
+library(haven)
+sal_outbrk <- read_dta("sal_outbrk.dta")
+sal_outbrk <- sal_outbrk %>% mutate_if(is.labelled, funs(as_factor(.)))
+head(sal_outbrk)
+ctable(sal_outbrk$slt_a, sal_outbrk$casecontrol)
+```
+
+```{r}
+condlogm3a <- clogit(I(casecontrol == "case") ~ slt_a + strata(match_grp), data = sal_outbrk)
+summary(condlogm3a)
+```
+
+# Tutorial 4
+
+```{r}
+bwds <- read.table("lowbwt11.dat")
+colnames(bwds) <- c("pair", "low_bw", "mom_age", "last_wt", "ethnic", "smoke", "ptd", "ht", "ui")
+bwds[, c(2, 5:9)] <- lapply(bwds[, c(2, 5:9)], as.factor)
+levels(bwds$low_bw) <- c(">2.5kg", "=<2.5kg")
+levels(bwds$ethnic) <- c("white", "black", "other")
+levels(bwds$smoke) <- c("no", "yes")
+levels(bwds$ptd) <- c("none", "yes")
+levels(bwds$ht) <- c("no", "yes")
+levels(bwds$ui) <- c("no", "yes")
+head(bwds)
+freq(bwds)
+descr(bwds)
+```
+
